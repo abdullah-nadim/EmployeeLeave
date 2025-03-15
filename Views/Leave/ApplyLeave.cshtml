@@ -1,0 +1,14 @@
+﻿@model EmployeeLeave.Data.Table.Leave
+
+<h2>Apply for Leave</h2>
+
+<form method="post" asp-action="ApplyLeave">
+    <div class="mb-3">
+        <label class="form-label">Reason</label>
+        <input asp-for="Reason" class="form-control" required />
+    </div>
+
+    <input type="hidden" asp-for="EmployeeId" value="@User.Identity.Name" />  <!-- You can replace User.Identity.Name with actual EmployeeId -->
+
+    <button type="submit" class="btn btn-primary">Apply for Leave</button>
+</form>

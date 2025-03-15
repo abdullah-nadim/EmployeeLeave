@@ -1,0 +1,19 @@
+﻿@model EmployeeLeave.Data.Identity.ApplicationUser
+@{
+    ViewData["Title"] = "Delete Employee";
+}
+
+<h2>Delete Employee</h2>
+<p>Are you sure you want to delete this employee?</p>
+
+<div>
+    <strong>Username:</strong> @Model.UserName <br />
+    <strong>Email:</strong> @Model.Email <br />
+    <strong>Phone:</strong> @Model.PhoneNumber
+</div>
+
+<form asp-action="Delete" method="post">
+    <input type="hidden" asp-for="Id" />
+    <button type="submit" class="btn btn-danger">Delete</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>

@@ -1,0 +1,72 @@
+﻿@using Microsoft.AspNetCore.Authentication
+@model EmployeeLeave.Models.LoginViewModel
+
+@{
+    ViewData["Title"] = "Log in";
+    var returnUrl = ViewData["ReturnUrl"] as string;
+    var externalLogins = ViewData["ExternalLogins"] as List<AuthenticationScheme>;
+}
+
+<h1>@ViewData["Title"]</h1>
+<div class="row">
+    <div class="col-md-4">
+        <section>
+            <form id="account" asp-action="Login" asp-controller="Account" method="post">
+                <input type="hidden" name="returnUrl" value="@returnUrl" />
+                <h2>Use a local account to log in.</h2>
+                <hr />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Email" class="form-control" autocomplete="username" placeholder="name@example.com" />
+                    <label asp-for="Email">Email</label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Password" class="form-control" autocomplete="current-password" placeholder="password" />
+                    <label asp-for="Password">Password</label>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+                <div class="checkbox mb-3">
+                    <label>
+                        <input class="form-check-input" asp-for="RememberMe" />
+                        @Html.DisplayNameFor(m => m.RememberMe)
+                    </label>
+                </div>
+
+                <button id="login-submit" type="submit" class="w-100 btn btn-lg btn-primary">Log in</button>
+
+                <p><a asp-action="ForgotPassword" asp-controller="Account">Forgot your password?</a></p>
+                <p><a asp-action="Register" asp-controller="Account" asp-route-returnUrl="@returnUrl">Register as a new user</a></p>
+            </form>
+        </section>
+    </div>
+
+    <div class="col-md-6 col-md-offset-2">
+        <section>
+            <h3>Use another service to log in.</h3>
+            <hr />
+            @if (externalLogins != null && externalLogins.Any())
+            {
+                <form asp-action="ExternalLogin" asp-controller="Account" method="post">
+                    @foreach (var provider in externalLogins)
+                    {
+                        <button type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using @provider.DisplayName">
+                            @provider.DisplayName
+                        </button>
+                    }
+                </form>
+            }
+            else
+            {
+                <p>No external authentication services are configured.</p>
+            }
+        </section>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

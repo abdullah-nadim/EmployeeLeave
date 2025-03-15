@@ -1,0 +1,63 @@
+﻿@model IEnumerable<EmployeeLeave.Data.Table.Leave>
+
+<h2>My Leave Requests</h2>
+
+<!-- Seek Leave Button -->
+<button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#seekLeaveModal">Seek Leave</button>
+
+<!-- Seek Leave Modal -->
+<div class="modal fade" id="seekLeaveModal" tabindex="-1" aria-labelledby="seekLeaveModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="seekLeaveModalLabel">Apply for Leave</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="seekLeaveForm" method="post" asp-controller="Leave" asp-action="ApplyLeave">
+                    <div class="mb-3">
+                        <label class="form-label" for="Reason">Reason</label>
+                        <textarea id="Reason" name="Reason" class="form-control" required></textarea>
+                    </div>
+                    <input type="hidden" name="EmployeeId" value="@User.FindFirst("EmployeeId")?.Value" /> <!-- Replace with actual EmployeeId -->
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Submit Leave Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Leave Requests Table -->
+<table class="table">
+    <thead>
+        <tr>
+            <th>Reason</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var leave in Model)
+        {
+            <tr>
+                <td>@leave.Reason</td>
+                <td>@leave.Status</td>
+                <td>
+                    @if (leave.Status == "Pending")
+                    {
+                        <form method="post"  asp-action="ApproveLeave" asp-route-leaveId="@leave.Id">
+                            <button type="submit" class="btn btn-success">Approve</button>
+                        </form>
+                        <form method="post" asp-action="RejectLeave" asp-route-leaveId="@leave.Id">
+                            <button type="submit" class="btn btn-danger">Reject</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,36 @@
+﻿@model IEnumerable<EmployeeLeave.Data.Identity.ApplicationUser>
+
+@{
+    ViewData["Title"] = "All Accounts";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Email</th>
+            <th>Phone Number</th>
+            @* <th>Role</th> *@
+            <th>Account Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.UserName</td>
+                <td>@user.Email</td>
+                <td>@user.PhoneNumber</td>
+                @* <td>@string.Join(", ", user.Roles)</td> *@
+                <td>@(user.LockoutEnd.HasValue ? "Locked" : "Active")</td>
+                <td>
+                    <a href="@Url.Action("Edit", "Account", new { id = user.Id })" class="btn btn-primary">Edit</a>
+                    <a href="@Url.Action("Delete", "Account", new { id = user.Id })" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
