@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 
-[Authorize] // Ensure only logged-in users can access the profile
+[Authorize] 
 public class ProfileController : Controller
 {
     private readonly ApplicationDbContext _context;
@@ -28,7 +28,7 @@ public class ProfileController : Controller
             return RedirectToAction("Login", "Account");
         }
 
-        var employeeId = Guid.Parse(user.Id); // Convert user Id to Guid
+        Guid employeeId = Guid.Parse(user.Id); // Convert user Id to Guid
         var profile = await _context.profiles.FirstOrDefaultAsync(p => p.EmployeeId == employeeId); // Search by EmployeeId
 
         if (profile == null)

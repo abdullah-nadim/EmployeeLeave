@@ -77,12 +77,12 @@ namespace EmployeeLeave.Controllers
 
             if (result.Succeeded)
             {
-                // Create Profile Entry
+                
                 var profile = new Profile
                 {
                     Name = model.Name,
-                    EmployeeId = Guid.Parse(await _userManager.GetUserIdAsync(user)), // Use User ID as EmployeeId
-                    Department = null // Admin will set this later
+                    EmployeeId = Guid.Parse(await _userManager.GetUserIdAsync(user)), 
+                    Department = null 
                 };
 
                 _context.profiles.Add(profile);
@@ -161,7 +161,7 @@ namespace EmployeeLeave.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        //[Authorize(Roles = "Admin")] // Only allow access for users in the "Admin" role
+        //[Authorize(Roles = "Admin")] 
         [HttpGet]
         public async Task<IActionResult> AllEmployee()
         {
