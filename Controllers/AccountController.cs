@@ -77,7 +77,7 @@ namespace EmployeeLeave.Controllers
 
             if (result.Succeeded)
             {
-                
+                await _userManager.AddToRoleAsync(user, "Employee");
                 var profile = new Profile
                 {
                     Name = model.Name,
@@ -161,7 +161,7 @@ namespace EmployeeLeave.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        //[Authorize(Roles = "Admin")] 
+        [Authorize(Roles = "Admin")] 
         [HttpGet]
         public async Task<IActionResult> AllEmployee()
         {
