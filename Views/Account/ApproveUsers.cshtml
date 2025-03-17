@@ -1,0 +1,25 @@
+﻿@model List<EmployeeLeave.Data.Identity.ApplicationUser>
+
+<h2>Pending User Approvals</h2>
+
+<table>
+    <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Action</th>
+    </tr>
+    @foreach (var user in Model)
+    {
+        <tr>
+            <td>@user.Name</td>
+            <td>@user.Email</td>
+            <td>
+                <form method="post" asp-action="ChangeApprovalStatus">
+                    <input type="hidden" name="userId" value="@user.Id" />
+                    <button type="submit" name="status" value="Approved">Approve</button>
+                    <button type="submit" name="status" value="Rejected">Reject</button>
+                </form>
+            </td>
+        </tr>
+    }
+</table>

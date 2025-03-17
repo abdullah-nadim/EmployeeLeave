@@ -47,7 +47,8 @@ async Task SeedRolesAndAdmin(UserManager<ApplicationUser> userManager, RoleManag
         {
             UserName = adminEmail,
             Email = adminEmail,
-            EmailConfirmed = true
+            EmailConfirmed = true,
+            Status = ApprovalStatus.Approved
         };
 
         var result = await userManager.CreateAsync(adminUser, "Admin@123"); // Default password

@@ -80,9 +80,10 @@ namespace EmployeeLeave.Controllers
             if (!ModelState.IsValid) return View(model);
 
             var result = await _accountService.LoginAsync(model);
+
             if (result.Succeeded) return RedirectToAction("Index", "Home");
 
-            ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+            ModelState.AddModelError(string.Empty, result.ErrorMessage ?? "Invalid login attempt.");
             return View(model);
         }
 
@@ -148,6 +149,34 @@ namespace EmployeeLeave.Controllers
             return RedirectToAction(nameof(AllEmployee));
         }
 
+        [HttpGet]
+        public IActionResult PendingApproval()
+        {
+            return View();
+        }
 
+        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        public async Task<IActionResult> ApproveUsers()
+        {
+            var pendingUsers = await _userManager.Users
+                .Where(u => u.Status == ApprovalStatus.Pending)
+                .ToListAsync();
+
+            return View(pendingUsers);
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost]
+        public async Task<IActionResult> ChangeApprovalStatus(string userId, ApprovalStatus status)
+        {
+            var user = await _userManager.FindByIdAsync(userId);
+            if (user == null) return NotFound();
+
+            user.Status = status;
+            await _userManager.UpdateAsync(user);
+
+            return RedirectToAction("ApproveUsers");
+        }
     }
 }

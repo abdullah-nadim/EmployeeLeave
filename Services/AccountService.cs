@@ -35,7 +35,12 @@ namespace EmployeeLeave.Services
 
         public async Task<RegisterResult> RegisterAsync(RegisterViewModel model)
         {
-            var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+            var user = new ApplicationUser
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                Status = ApprovalStatus.Pending 
+            }; 
             var result = await _userManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
@@ -61,13 +66,30 @@ namespace EmployeeLeave.Services
 
         public async Task<LoginResult> LoginAsync(LoginViewModel model)
         {
+            var user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null)
+            {
+                return new LoginResult { Succeeded = false, ErrorMessage = "Invalid login attempt." };
+            }
+
+            if (user.Status == ApprovalStatus.Pending)
+            {
+                return new LoginResult { Succeeded = false, ErrorMessage = "Your account is pending approval. Please wait for an admin to approve it." };
+            }
+
+            if (user.Status == ApprovalStatus.Rejected)
+            {
+                return new LoginResult { Succeeded = false, ErrorMessage = "Your account has been rejected. Contact support for further assistance." };
+            }
+
             var result = await _signInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, lockoutOnFailure: false);
 
             return new LoginResult
             {
                 Succeeded = result.Succeeded,
                 RequiresTwoFactor = result.RequiresTwoFactor,
-                IsLockedOut = result.IsLockedOut
+                IsLockedOut = result.IsLockedOut,
+                ErrorMessage = result.Succeeded ? null : "Invalid login attempt."
             };
         }
 

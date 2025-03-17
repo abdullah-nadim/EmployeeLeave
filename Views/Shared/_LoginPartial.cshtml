@@ -15,6 +15,9 @@
                 <a class="nav-link " asp-controller="Leave" asp-action="LeaveList" title="Manage">Leave List</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link " asp-controller="Account" asp-action="ApproveUsers">Pending Approvals</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link " asp-controller="Account" asp-action="AllEmployee">Employee List</a>
             </li>
         }
@@ -38,10 +41,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Register">Register</a>
+            <a class="nav-link " asp-controller="Account" asp-action="Register">Register</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-controller="Account" asp-action="Login">Login</a>
+            <a class="nav-link " asp-controller="Account" asp-action="Login">Login</a>
         </li>
     }
 </ul>
