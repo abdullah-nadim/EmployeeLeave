@@ -1,0 +1,76 @@
+﻿/* Custom Styling */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Poppins', sans-serif;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+/* Navbar */
+.navbar {
+    background: linear-gradient(to right, #003366, #00509d);
+    padding: 15px;
+}
+
+.container {
+    flex: 1;
+}
+
+.navbar-brand {
+    font-weight: bold;
+    color: #ffffff !important;
+}
+
+.nav-link {
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+    .nav-link:hover {
+        color: #ffcc00 !important;
+    }
+
+/* Main Container */
+.container {
+    padding: 30px 15px;
+}
+
+/* Footer */
+footer {
+    background: #003366;
+    color: #ffffff;
+    padding: 15px 0;
+    text-align: center;
+    margin-top: auto;
+    width: 100%;
+}
+
+    footer a {
+        color: #ffcc00;
+        text-decoration: none;
+    }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+
+
+/* Match Services Background Color with Navbar/Footer */
+.service-box {
+    background: linear-gradient(to right, #003366, #00509d); /* Same as navbar/footer */
+    border-radius: 10px;
+}
+
+.service-box h4 {
+    font-weight: bold;
+}
+
+.service-box p {
+    opacity: 0.9;
+}
+

@@ -37,7 +37,7 @@
         <tr>
             <th>Reason</th>
             <th>Status</th>
-            <th>Actions</th>
+            @* <th>Actions</th> *@
         </tr>
     </thead>
     <tbody>
@@ -46,17 +46,17 @@
             <tr>
                 <td>@leave.Reason</td>
                 <td>@leave.Status</td>
-                <td>
-                    @if (leave.Status == "Pending")
-                    {
-                        <form method="post"  asp-action="ApproveLeave" asp-route-leaveId="@leave.Id">
-                            <button type="submit" class="btn btn-success">Approve</button>
-                        </form>
-                        <form method="post" asp-action="RejectLeave" asp-route-leaveId="@leave.Id">
-                            <button type="submit" class="btn btn-danger">Reject</button>
-                        </form>
-                    }
-                </td>
+                @* <td> *@
+                @*     @if (leave.Status == "Pending") *@
+                @*     { *@
+                @*         <form method="post"  asp-action="ApproveLeave" asp-route-leaveId="@leave.Id"> *@
+                @*             <button type="submit" class="btn btn-success">Approve</button> *@
+                @*         </form> *@
+                @*         <form method="post" asp-action="RejectLeave" asp-route-leaveId="@leave.Id"> *@
+                @*             <button type="submit" class="btn btn-danger">Reject</button> *@
+                @*         </form> *@
+                @*     } *@
+                @* </td> *@
             </tr>
         }
     </tbody>

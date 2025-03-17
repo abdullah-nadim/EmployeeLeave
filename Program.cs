@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using EmployeeLeave.Data;
 using EmployeeLeave.Data.Identity;
-
+using EmployeeLeave.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -21,15 +21,8 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
     .AddDefaultTokenProviders();
 
 builder.Services.AddControllersWithViews();
-
-
-
-
-
-
-
-
-
+builder.Services.AddScoped<ILeaveService, LeaveService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 
 
 async Task SeedRolesAndAdmin(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)

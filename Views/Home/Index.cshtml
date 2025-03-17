@@ -1,8 +1,57 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Welcome to Threesquare";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container text-center mt-5">
+    <!-- Hero Section -->
+    <div class="p-5 bg-light rounded-3 shadow">
+        <h1 class="display-4 fw-bold text-primary">Welcome to Threesquare</h1>
+        <p class="lead text-muted">Innovating solutions, empowering businesses.</p>
+        <p>Explore our world of technology-driven excellence and discover how we make a difference.</p>
+        <a href="#about" class="btn btn-primary btn-lg mt-3">Learn More</a>
+    </div>
+
+    <!-- About Section -->
+    <div id="about" class="mt-5">
+        <h2 class="fw-bold">About Threesquare</h2>
+        <p class="text-muted">
+            At Threesquare, we specialize in delivering cutting-edge IT solutions tailored to modern business needs.
+            Our team of experts is dedicated to providing top-notch software development, cloud solutions, and data-driven strategies.
+        </p>
+    </div>
+
+    <!-- Our Services -->
+    <div class="mt-5">
+        <h2 class="fw-bold">Our Services</h2>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="p-4 shadow rounded text-white service-box">
+                    <h4>Software Development</h4>
+                    <p>Custom software solutions built to drive efficiency and innovation.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 shadow rounded text-white service-box">
+                    <h4>Cloud Solutions</h4>
+                    <p>Scalable, secure, and reliable cloud computing services.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="p-4 shadow rounded text-white service-box">
+                    <h4>Data Analytics</h4>
+                    <p>Actionable insights through intelligent data processing and AI-powered analytics.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="mt-5">
+        <h2 class="fw-bold">Get in Touch</h2>
+        <p>We’d love to hear from you! Reach out to us for any inquiries.</p>
+        <a href="/Contact" class="btn btn-outline-primary btn-lg">Contact Us</a>
+    </div>
 </div>
+
+<!-- Custom Styles -->
+

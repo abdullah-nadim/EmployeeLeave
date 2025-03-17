@@ -1,0 +1,46 @@
+﻿@model List<EmployeeLeave.Models.LeaveViewModel>
+
+@{
+    ViewData["Title"] = "Leave List";
+}
+
+<h2>Leave List</h2>
+
+<table class="table table-bordered table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Employee Name</th>
+            <th>Reason</th>
+            <th>Department</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var leave in Model)
+        {
+            <tr>
+                
+                <td>@leave.EmployeeName</td> <!-- Display employee name -->
+                <td>@leave.Reason</td> <!-- Assuming you have LeaveType in your model -->
+                <td>@leave.Department</td>
+                <td>@leave.Status</td> <!-- Status like 'Pending', 'Approved', 'Rejected' -->
+                <td>
+                    @if (leave.Status == "Pending")
+                    {
+                        <form method="post"  asp-action="ApproveLeave" asp-route-leaveId="@leave.Id">
+                            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                        </form>
+                        <form method="post" asp-action="RejectLeave" asp-route-leaveId="@leave.Id">
+                            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<p>
+    <a href="@Url.Action("Index", "Home")" class="btn btn-secondary">Back to Home</a>
+</p>

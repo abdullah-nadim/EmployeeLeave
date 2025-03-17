@@ -1,6 +1,8 @@
 ﻿using EmployeeLeave.Data;
 using EmployeeLeave.Data.Identity;
 using EmployeeLeave.Data.Table;
+using EmployeeLeave.Models;
+using EmployeeLeave.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +16,13 @@ namespace EmployeeLeave.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILeaveService _leaveService;
 
-        public LeaveController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public LeaveController(ApplicationDbContext context, ILeaveService leaveService, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
+            _leaveService = leaveService;
         }
 
        
@@ -26,46 +30,29 @@ namespace EmployeeLeave.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return RedirectToAction("Login", "Account");
-            }
 
             var employeeId = Guid.Parse(user.Id);
-            var leaves = await _context.leaves
-                .Where(l => l.EmployeeId == employeeId)
-                .ToListAsync();
-
+            var leaves = await _leaveService.GetMyLeavesAsync(employeeId);
             return View(leaves);
         }
 
+        public async Task<IActionResult> LeaveList()
+        {
+            var leaveList = await _leaveService.GetAllLeavesAsync();
+            return View(leaveList);
+        }
 
         public async Task<IActionResult> ApplyLeave(string Reason)
         {
-            var user = await _userManager.GetUserAsync(User); 
+            var user = await _userManager.GetUserAsync(User);
             if (user == null)
-            {
                 return RedirectToAction("Login", "Account");
-            }
 
-            var EmployeeId = Guid.Parse(user.Id);
+            var employeeId = Guid.Parse(user.Id);
+            var success = await _leaveService.ApplyLeaveAsync(employeeId, Reason);
 
-            if (!string.IsNullOrEmpty(Reason) && EmployeeId != Guid.Empty)
-            {
-                var leave = new Leave
-                {
-                    Reason = Reason,
-                    EmployeeId = EmployeeId,
-                    Status = "Pending" 
-                };
-
-                _context.leaves.Add(leave);
-                await _context.SaveChangesAsync();
-
-               
-                return RedirectToAction("MyLeaves");
-            }
-
-            return RedirectToAction("Index","Profile");
+            return success ? RedirectToAction("MyLeaves") : RedirectToAction("Index", "Profile");
         }
 
 
@@ -73,34 +60,16 @@ namespace EmployeeLeave.Controllers
         [HttpPost]
         public async Task<IActionResult> ApproveLeave(int leaveId)
         {
-            var leave = await _context.leaves.FindAsync(leaveId);
-            if (leave == null)
-            {
-                return NotFound();
-            }
-
-            leave.Status = "Approved"; // Update status to Approved
-            _context.leaves.Update(leave);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(MyLeaves), new { employeeId = leave.EmployeeId });
+            var success = await _leaveService.UpdateLeaveStatusAsync(leaveId, "Approved");
+            return success ? RedirectToAction("LeaveList") : NotFound();
         }
 
        
         [HttpPost]
         public async Task<IActionResult> RejectLeave(int leaveId)
         {
-            var leave = await _context.leaves.FindAsync(leaveId);
-            if (leave == null)
-            {
-                return NotFound();
-            }
-
-            leave.Status = "Rejected"; 
-            _context.leaves.Update(leave);
-            await _context.SaveChangesAsync();
-
-            return RedirectToAction(nameof(MyLeaves), new { employeeId = leave.EmployeeId });
+            var success = await _leaveService.UpdateLeaveStatusAsync(leaveId, "Rejected");
+            return success ? RedirectToAction("LeaveList") : NotFound();
         }
     }
 }
